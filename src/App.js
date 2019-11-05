@@ -1,25 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import { Grommet, Button } from "grommet";
+import { start, join } from "./bot.js";
 function App() {
+  const bot = window.location.pathname.split("/")[1];
+  const bots = {
+    1: {
+      id: "ccb01141-1c22-43de-be55-f97fe8263462",
+      username: "[Bot]Stook"
+    },
+    2: {
+      id: "cdddd141-1c22-33de-be55-f97fe8263462",
+      username: "[Bot]Stook3"
+    }
+  };
+  setTimeout(() => {
+    join(bots[bot].id, bots[bot].username);
+  });
+  setTimeout(() => {
+    start();
+  }, 500);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grommet plain>
+      <Button
+        onClick={() => {
+          start();
+        }}
+        label="Force Start"
+      ></Button>
+      <Button
+        onClick={() => {
+          join(bots[bot].id, bots[bot].username);
+        }}
+        label="Join"
+      ></Button>
+    </Grommet>
   );
 }
 
