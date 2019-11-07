@@ -1,38 +1,32 @@
-import React from "react";
-import { Grommet, Button } from "grommet";
-import { start, join } from "./bot.js";
+import React, { lazy, Suspense } from "react";
+import { Grommet } from "grommet";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
+import Header from "./components/Header";
+import theme from "./theme";
+
+const Home = lazy(() => import("./pages/Home"));
+const Play = lazy(() => import("./pages/Play"));
+const Test = lazy(() => import("./pages/Test"));
+
 function App() {
-  const bot = window.location.pathname.split("/")[1];
-  const bots = {
-    1: {
-      id: "ccb01141-1c22-43de-be55-f97fe8263462",
-      username: "[Bot]Stook"
-    },
-    2: {
-      id: "cdddd141-1c22-33de-be55-f97fe8263462",
-      username: "[Bot]Stook3"
-    }
-  };
-  setTimeout(() => {
-    join(bots[bot].id, bots[bot].username);
-  });
-  setTimeout(() => {
-    start();
-  }, 500);
   return (
-    <Grommet plain>
-      <Button
-        onClick={() => {
-          start();
-        }}
-        label="Force Start"
-      ></Button>
-      <Button
-        onClick={() => {
-          join(bots[bot].id, bots[bot].username);
-        }}
-        label="Join"
-      ></Button>
+    <Grommet theme={theme}>
+      <Suspense fallback="Loading...">
+        <Router>
+          <Header />
+          <Switch>
+            <Route path="/" exact component={Home}></Route>
+            <Redirect exact from="/play" to="/play/1"></Redirect>
+            <Route path="/play/:bot" component={Play}></Route>
+            <Route path="/test" component={Test}></Route>
+          </Switch>
+        </Router>
+      </Suspense>
     </Grommet>
   );
 }
